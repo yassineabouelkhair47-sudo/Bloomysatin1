@@ -1,0 +1,168 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #faf6f0;
+  --color-cream: #f4ebe1;
+  --color-blush: #f4dce0;
+  --color-petal: #e9bac1;
+  --color-satin: #ce8794;
+  --color-rose: #b65c6c;
+  --color-burgundy: #7a2836;
+  --color-wine: #551b27;
+  --color-gold: #b98a4e;
+  --color-ink: #40242b;
+  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Jost", "Segoe UI", sans-serif;
+  --font-script: "Great Vibes", cursive;
+  --shadow-soft: 0 24px 48px -24px rgb(85 27 39 / 0.28);
+  --shadow-card: 0 14px 34px -18px rgb(85 27 39 / 0.2);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #e9bac1;
+  color: #551b27;
+}
+
+/* ---- Subtle zellige / Moroccan geometric pattern ---- */
+.zellige {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%237a2836' stroke-opacity='0.08'%3E%3Crect x='28' y='28' width='28' height='28'/%3E%3Crect x='28' y='28' width='28' height='28' transform='rotate(45 42 42)'/%3E%3Ccircle cx='42' cy='42' r='3'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='84' cy='0' r='2'/%3E%3Ccircle cx='0' cy='84' r='2'/%3E%3Ccircle cx='84' cy='84' r='2'/%3E%3C/g%3E%3C/svg%3E");
+}
+.zellige-light {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23f4dce0' stroke-opacity='0.14'%3E%3Crect x='28' y='28' width='28' height='28'/%3E%3Crect x='28' y='28' width='28' height='28' transform='rotate(45 42 42)'/%3E%3Ccircle cx='42' cy='42' r='3'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---- Scroll reveals ---- */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+.reveal-up { transform: translateY(30px); }
+.reveal-left { transform: translateX(-36px); }
+.reveal-right { transform: translateX(36px); }
+.reveal-scale { transform: scale(0.94); }
+.reveal-in { opacity: 1; transform: none; }
+
+/* ---- Satin sheen sweep on hover ---- */
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-130%) skewX(-12deg);
+  background: linear-gradient(105deg, transparent 42%, rgb(255 255 255 / 0.32) 50%, transparent 58%);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+}
+.sheen:hover::after { transform: translateX(130%) skewX(-12deg); }
+
+/* ---- Ken Burns breathing ---- */
+@keyframes kenburns {
+  0% { transform: scale(1.06); }
+  50% { transform: scale(1.13) translate(1.4%, -1.4%); }
+  100% { transform: scale(1.06); }
+}
+.kenburns { animation: kenburns 20s ease-in-out infinite; }
+
+/* ---- Floating ambient cards ---- */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+.floaty { animation: floaty 7s ease-in-out infinite; }
+.floaty-slow { animation: floaty 10s ease-in-out 1.2s infinite; }
+
+/* ---- Marquee ribbon ---- */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 36s linear infinite;
+}
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ---- Falling satin petals ---- */
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -8vh, 0) rotate(0deg); opacity: 0; }
+  8% { opacity: var(--po, 0.75); }
+  90% { opacity: var(--po, 0.75); }
+  100% { transform: translate3d(var(--sway, 70px), 108vh, 0) rotate(var(--spin, 300deg)); opacity: 0.05; }
+}
+.petal {
+  position: absolute;
+  top: 0;
+  animation: petal-fall var(--dur, 16s) linear var(--delay, 0s) infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* ---- WhatsApp pulse ---- */
+@keyframes wa-ring {
+  0% { box-shadow: 0 0 0 0 rgb(37 211 102 / 0.4); }
+  100% { box-shadow: 0 0 0 20px rgb(37 211 102 / 0); }
+}
+.wa-pulse { animation: wa-ring 2.4s ease-out infinite; }
+
+/* ---- Soft glow breathing ---- */
+@keyframes glow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.08); }
+}
+.glow { animation: glow 9s ease-in-out infinite; }
+
+/* ---- Gentle bob for badges ---- */
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+}
+.bob { animation: bob 5s ease-in-out infinite; }
+
+/* ---- Underline flourish ---- */
+.flourish {
+  background-image: linear-gradient(120deg, rgb(206 135 148 / 0.55), rgb(185 138 78 / 0.55));
+  background-repeat: no-repeat;
+  background-size: 100% 1.5px;
+  background-position: 0 100%;
+}
+
+/* ---- Thin elegant scrollbar ---- */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #f4ebe1; }
+::-webkit-scrollbar-thumb {
+  background: #ce8794;
+  border-radius: 8px;
+  border: 2px solid #f4ebe1;
+}
+
+/* ---- Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1 !important; transform: none !important; }
+  .petal, .marquee-track { animation: none !important; }
+  .marquee-track { flex-wrap: wrap; width: 100%; }
+  .marquee-track > div:last-child { display: none; }
+}
